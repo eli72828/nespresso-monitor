@@ -26,7 +26,7 @@ def check_stock():
         response.raise_for_status()
 
         # הלוגיקה: אם "COMING SOON" לא נמצא בטקסט או ש"הוספה לסל" מופיע
-        if "COMING SOON" not in response.text or "הוספה לסל" in response.text:
+        if "COMING SOON" in response.text:
             msg = f"☕ חדשות טובות! כוס ה-Bubble Gum זמינה כנראה לרכישה עכשיו!\nכנס מהר: {URL}"
             send_telegram_message(msg)
             print("Alert sent to Telegram!")
