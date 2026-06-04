@@ -22,8 +22,8 @@ def make_telegram_call():
         "rpt": 2
     }
     try:
-        response = requests.get("https://api.callmebot.com/start.php", params=params)
-        print("CallMeBot Response:", response.text)
+        requests.get("https://api.callmebot.com/start.php", params=params)
+        print("Phone call initiated!")
     except Exception as e:
         print(f"Error calling: {e}")
 
@@ -37,7 +37,7 @@ def check_stock():
         response.raise_for_status()
         
         # ה-not חזר למקומו! עכשיו הקוד סורק בשקט ומחכה למלאי האמיתי
-        if "אזל זמנית" in response.text:
+        if "אזל זמנית" not in response.text:
             msg = f"☕ חדשות מעולות! כוס ה-Bubble Gum הוורודה כנראה זמינה עכשיו!\nכנס מהר ללינק: {URL}"
             send_telegram_message(msg)
             make_telegram_call()  # הקריאה החדשה שמפעילה את שיחת הטלפון
