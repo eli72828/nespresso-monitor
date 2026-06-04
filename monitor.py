@@ -6,7 +6,7 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
 
 # הכנס כאן את שם המשתמש שלך בטלגרם (עם השטרודל) או את מספר הטלפון שלך עם 972+
-CALLMEBOT_USER = "+972 53 7282883"
+CALLMEBOT_USER = "+972537282883"
 
 def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
