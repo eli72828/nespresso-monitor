@@ -13,7 +13,7 @@ def send_telegram_message(message):
     url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
     payload = {"chat_id": CHAT_ID, "text": message}
     requests.post(url, json=payload)
-
+    print("Telegram Response:", response.text)
 
 def check_stock():
     # הוספת User-Agent כדי שהאתר לא יחשוב שאנחנו בוט חסימה
