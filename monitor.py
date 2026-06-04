@@ -23,7 +23,7 @@ def make_telegram_call():
     }
     try:
         requests.get("https://api.callmebot.com/start.php", params=params)
-        print("Phone call initiated!")
+        print("CallMeBot Response:", response.text)
     except Exception as e:
         print(f"Error calling: {e}")
 
