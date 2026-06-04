@@ -37,7 +37,7 @@ def check_stock():
         response.raise_for_status()
         
         # ה-not חזר למקומו! עכשיו הקוד סורק בשקט ומחכה למלאי האמיתי
-        if "אזל זמנית" not in response.text:
+        if "אזל זמנית" in response.text:
             msg = f"☕ חדשות מעולות! כוס ה-Bubble Gum הוורודה כנראה זמינה עכשיו!\nכנס מהר ללינק: {URL}"
             send_telegram_message(msg)
             make_telegram_call()  # הקריאה החדשה שמפעילה את שיחת הטלפון
