@@ -14,7 +14,6 @@ def send_telegram_message(message):
     requests.post(url, json=payload)
 
 def make_telegram_call():
-    # פונקציה חדשה שמתקשרת אליך ומקריאה טקסט
     params = {
         "user": CALLMEBOT_USER,
         "text": "Wake up! The Nespresso Bubble Gum cup is now in stock!",
@@ -22,10 +21,12 @@ def make_telegram_call():
         "rpt": 2
     }
     try:
-        requests.get("https://api.callmebot.com/start.php", params=params)
+        # הוספנו את המילה response = בתחילת השורה כדי שהמשתנה באמת יהיה קיים
+        response = requests.get("https://api.callmebot.com/start.php", params=params)
         print("CallMeBot Response:", response.text)
     except Exception as e:
         print(f"Error calling: {e}")
+
 
 def check_stock():
     headers = {
