@@ -1,7 +1,8 @@
 import os
 import requests
+from playwright.sync_api import sync_playwright
 
-URL = "https://www.nespresso.com/il/he/orders/accessories/original/travel-tumbler-bubble-gum"
+URL = "הכנס_כאן_את_הלינק_של_נספרסו"
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
 
@@ -11,24 +12,34 @@ def send_telegram_message(message):
     requests.post(url, json=payload)
 
 def check_stock():
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
-    }
-    
-    try:
-        response = requests.get(URL, headers=headers)
-        response.raise_for_status()
+    with sync_playwright() as p:
+        # פותחים דפדפן כרום נסתר
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page()
         
-        # אנחנו מחפשים עכשיו את המילה שנספרסו שותלים ב-HTML למוצרים חסרים
-        if "אזל זמנית" not in response.text:
-            msg = f"☕ חדשות מעולות! כוס ה-Bubble Gum הוורודה כנראה זמינה עכשיו!\n{URL}"
-            send_telegram_message(msg)
-            print("Alert sent to Telegram! Item might be in stock.")
-        else:
-            print("Still out of stock. 'אזל זמנית' found in the page.")
+        try:
+            # הולכים לאתר ומחכים שהרשת "תירגע" - כלומר שכל ה-JavaScript יסיים לטעון
+            page.goto(URL, wait_until="networkidle")
             
-    except Exception as e:
-        print(f"Error checking stock: {e}")
+            # עכשיו שולפים את ה-HTML אחרי שכל הנתונים נטענו
+            html_content = page.content().lower()
+            
+            # בדיקת ריגול: האם אנחנו רואים עכשיו את הכוס?
+            if "bubble" not in html_content:
+                print("Warning: Still can't see the word 'bubble'. Nespresso might be blocking automated browsers.")
+            elif "coming soon" in html_content:
+                print("The cup loaded successfully! But it's still 'COMING SOON'. Checked successfully.")
+            elif "הוספה לסל" in html_content:
+                msg = f"☕ מהר! כוס ה-Bubble Gum זמינה עכשיו לרכישה!\nכנס ללינק: {URL}"
+                send_telegram_message(msg)
+                print("Alert sent to Telegram!")
+            else:
+                print("Something changed on the page, couldn't find 'coming soon' or 'הוספה לסל'.")
+                
+        except Exception as e:
+            print(f"Error checking stock: {e}")
+        finally:
+            browser.close()
 
 if __name__ == "__main__":
     if not BOT_TOKEN or not CHAT_ID:
