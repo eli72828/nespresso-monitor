@@ -20,7 +20,7 @@ def check_stock():
         response.raise_for_status()
         
         # אנחנו מחפשים את הטקסט הסודי שנספרסו שותלים בקוד כשהמוצר חסר
-        if "אזל זמנית" not in response.text:
+        if "אזל זמנית" in response.text:
             msg = f"☕ חדשות מעולות! כוס ה-Bubble Gum הוורודה כנראה זמינה עכשיו!\nכנס מהר ללינק: {URL}"
             send_telegram_message(msg)
             print("Alert sent to Telegram! 'אזל זמנית' is gone.")
