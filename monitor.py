@@ -2,7 +2,7 @@ import os
 import requests
 
 # אל תשכח להדביק פה שוב את הלינק המדויק של נספרסו!
-URL = "הכנס_כאן_את_הלינק_של_נספרסו"
+URL = "https://www.nespresso.com/il/he/orders/accessories/original/travel-tumbler-bubble-gum"
 
 BOT_TOKEN = os.environ.get("BOT_TOKEN")
 CHAT_ID = os.environ.get("CHAT_ID")
